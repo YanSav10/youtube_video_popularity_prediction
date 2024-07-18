@@ -21,7 +21,7 @@ bst = xgb.Booster()
 bst.load_model('video_popularity_prediction_new.model')
 
 # YouTube Data API key
-api = 'AIzaSyAWWzclB23x1qQzjN4yuUEyyM-CndnH85w'
+api = 'xxxxxxxxxxxxxxxxx'
 
 # Function to fetch video details from YouTube Data API
 def get_video_details(api_key, video_url):
