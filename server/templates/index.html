@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Popularity Prediction</title>
+    <style>
+        /* Add a background image to the page */
+        body {
+            background-image: url('https://example.com/background-image.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Center the form */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 96%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="/predict" method="post">
+            <h1>Video Popularity Prediction</h1>
+            <label for="video_url">YouTube Video URL:</label><br>
+            <input type="text" id="video_url" name="video_url" required><br><br>
+            <input type="submit" value="Predict">
+            <h2 id="result"></h2>
+        </form>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        const result = document.getElementById('result');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                result.textContent = `Error: ${data.error}`;
+            } else {
+                result.textContent = `Predicted Views: ${data.predicted_views}`;
+            }
+        });
+    </script>
+</body>
+</html>
