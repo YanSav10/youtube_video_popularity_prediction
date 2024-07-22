@@ -7,6 +7,7 @@ import pickle
 import xgboost as xgb
 import requests
 from flask import Flask, request, jsonify, render_template
+import os
 
 nltk.download('punkt')
 
@@ -21,7 +22,7 @@ bst = xgb.Booster()
 bst.load_model('video_popularity_prediction_new.model')
 
 # YouTube Data API key
-api = 'xxxxxxxxxxxxxxxxx'
+api = os.getenv('API_KEY')
 
 # Function to fetch video details from YouTube Data API
 def get_video_details(api_key, video_url):
