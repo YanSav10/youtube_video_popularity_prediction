@@ -7,7 +7,7 @@ import pickle
 import xgboost as xgb
 import requests
 from flask import Flask, request, jsonify, render_template
-import os
+from google.cloud import secretmanager
 
 nltk.download('punkt')
 
@@ -21,8 +21,16 @@ booster.save_model('video_popularity_prediction_new.model')
 bst = xgb.Booster()
 bst.load_model('video_popularity_prediction_new.model')
 
-# YouTube Data API key
-api = os.getenv('API_KEY')
+def access_secret_version(project_id, secret_id, version_id="latest"):
+    client = secretmanager.SecretManagerServiceClient()
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+    response = client.access_secret_version(name=name)
+    return response.payload.data.decode("UTF-8")
+
+project = "hale-yew-429904-f0"
+secret = "api_key"
+
+api = access_secret_version(project, secret)
 
 # Function to fetch video details from YouTube Data API
 def get_video_details(api_key, video_url):
